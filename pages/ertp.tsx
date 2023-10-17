@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
-import type { NextPageWithLayout } from './_app'
-import { Button, Table } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
+import React, {useState} from 'react';
+import type {NextPageWithLayout} from './_app'
+import {Button, Layout, Table} from 'antd';
+import type {ColumnsType} from 'antd/es/table';
 
 import ULayout from '../components/ulayout'
 import Sidebar from '../components/sidebar'
+import Head from "next/head";
+
+const {
+    Header,
+    Content,
+} = Layout;
 
 interface DataType {
     hash: React.Key;
@@ -29,10 +35,10 @@ const columns: ColumnsType<DataType> = [
     {
         title: 'To',
         dataIndex: 'to',
-    },{
+    }, {
         title: 'Total Amount',
         dataIndex: 'total_amount',
-    },{
+    }, {
         title: 'When',
         dataIndex: 'when',
     },
@@ -75,17 +81,23 @@ const ERTP: NextPageWithLayout = () => {
 
     return (
         <section>
-            <div>
-                <div style={{ marginBottom: 16 }}>
-                    <Button type="primary" onClick={start} disabled={!hasSelected} loading={loading}>
-                        Reload
-                    </Button>
-                    <span style={{ marginLeft: 8 }}>
+            <Head>
+                <title>Agoric Blockchain Explorer</title>
+            </Head>
+
+            <Content style={{padding: 48}}>
+                <div>
+                    <div style={{marginBottom: 16}}>
+                        <Button type="primary" onClick={start} disabled={!hasSelected} loading={loading}>
+                            Reload
+                        </Button>
+                        <span style={{marginLeft: 8}}>
           {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
-        </span>
+                        </span>
+                    </div>
+                    <Table rowSelection={rowSelection} columns={columns} dataSource={data}/>
                 </div>
-                <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
-            </div>
+            </Content>
         </section>
     )
 }
@@ -95,7 +107,7 @@ export default ERTP
 ERTP.getLayout = function getLayout(page: React.ReactElement) {
     return (
         <ULayout>
-            <Sidebar />
+            <Sidebar/>
             {page}
         </ULayout>
     )
